@@ -28,7 +28,8 @@ public class JanelaTurmas extends JFrame {
     private final JButton excluiTurma = new JButton("Exclui Turma");
     private final JButton criaAluno = new JButton("Cria Aluno");
     private final JButton excluiAluno = new JButton("Exclui Aluno");
-
+    private final JanelaAluno janelaAluno = new JanelaAluno();
+    
     public JanelaTurmas(List<Turma> sampleData) {
         super("Turmas");
         setMinimumSize(new Dimension(500, 300));
@@ -81,6 +82,23 @@ public class JanelaTurmas extends JFrame {
                 lstTurmas.updateUI();
             }
         });
+        
+        janelaAluno.setJanelaTurmas(this);
+        
+        criaAluno.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                janelaAluno.solicitaNovoAluno();
+            }
+        });
+    }
+
+    public void adicionaAluno(Aluno a) {
+        
+        lstTurmas.getSelectedValue().getAlunos().add(a);
+        lstTurmas.updateUI();
+        lstAlunos.updateUI();
+        janelaAluno.setVisible(false);
     }
 
 }
