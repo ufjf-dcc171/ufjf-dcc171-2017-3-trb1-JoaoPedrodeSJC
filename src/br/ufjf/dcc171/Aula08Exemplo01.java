@@ -9,7 +9,7 @@ public class Aula08Exemplo01 {
     public static void main(String[] args) {
         
         JanelaTurmas janela = new JanelaTurmas(getSampleData());
-        janela.setSize(400, 300);
+        janela.setSize(500, 300);
         janela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         janela.setLocationRelativeTo(null);
         janela.setVisible(true);
