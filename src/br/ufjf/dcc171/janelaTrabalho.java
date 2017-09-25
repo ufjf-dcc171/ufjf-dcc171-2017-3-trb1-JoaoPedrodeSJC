@@ -26,9 +26,10 @@ import javax.swing.event.ListSelectionListener;
 
 public class janelaTrabalho extends JFrame {
 
-    double valor=0;
+    private double valor=0;
+    private String comprados = "<html>"; 
     private final List<Tipo> tipos;
-    private final JLabel comprados = new JLabel("Total = $0.00");
+    private final JLabel lblcomprados = new JLabel("Total________$0.00");
     
     private final JList<Tipo> lstTipos = new JList<>(new DefaultListModel<>());
     private final JList<Comida> lstComidas = new JList<>(new DefaultListModel<>());
@@ -46,14 +47,14 @@ public class janelaTrabalho extends JFrame {
     
     public janelaTrabalho(List<Tipo> sampleData) {
         super("FastFood");
-        setMinimumSize(new Dimension(580, 300));
+        setMinimumSize(new Dimension(610, 300));
         
         this.tipos = sampleData;        
         lstTipos.setModel(new TiposListModel(tipos));
         westPane = new JScrollPane(lstTipos);
         add(westPane, BorderLayout.WEST);
         
-        eastPane = new JScrollPane(comprados);
+        eastPane = new JScrollPane(lblcomprados);
         add(eastPane, BorderLayout.EAST);
         
         botoes2 = new JPanel(new GridLayout(1, 2));
@@ -125,9 +126,18 @@ public class janelaTrabalho extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Comida selecionada = lstComidas.getSelectedValue();
-                valor+= Double.parseDouble(selecionada.getPreco());
-                comprados.setText("Total = $" + valor);
-                validate();repaint();
+                if(selecionada!=null)
+                {
+                    String preencher = "_";
+                    String tamanho = ""+valor;
+                    for (int i = 0; i < 11 - (tamanho.length()); i++) {
+                        preencher = preencher + "_";
+                    }  
+                    valor+= Double.parseDouble(selecionada.getPreco());
+                    comprados = comprados + selecionada + "<br>";
+                    lblcomprados.setText(comprados + "Total"+preencher+"$" + valor +"</html>");
+                    validate();repaint();
+                }
             }
         });
         voltar.addActionListener(new ActionListener() {
@@ -144,9 +154,13 @@ public class janelaTrabalho extends JFrame {
         
         finalizar.addActionListener(new ActionListener() {
             @Override
+            
             public void actionPerformed(ActionEvent e) {
+                
+                comprados = "<html>";
                 valor = 0;
-                comprados.setText("Total = $0.00");
+                lblcomprados.setText("Total________$0.00");
+                validate();repaint();
             }
         });
     }
