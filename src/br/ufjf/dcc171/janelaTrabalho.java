@@ -19,17 +19,18 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableModel;
 
 public class janelaTrabalho extends JFrame {
 
-    private double valor=0;
-    private String comprados = "<html>"; 
+    private double valor=0; 
     private final List<Tipo> tipos;
-    private final JLabel lblcomprados = new JLabel("Total________$0.00");
+    private final JTable comprados;
     
     private final JList<Tipo> lstTipos = new JList<>(new DefaultListModel<>());
     private final JList<Comida> lstComidas = new JList<>(new DefaultListModel<>());
@@ -46,17 +47,33 @@ public class janelaTrabalho extends JFrame {
     //private final JanelaAluno janelaAluno = new JanelaAluno();
     
     public janelaTrabalho(List<Tipo> sampleData) {
+        
         super("FastFood");
         setMinimumSize(new Dimension(610, 300));
+        
+        JPanel formulario = new JPanel();
+        formulario.setLayout(new GridLayout(1, 3));
+        
+
         
         this.tipos = sampleData;        
         lstTipos.setModel(new TiposListModel(tipos));
         westPane = new JScrollPane(lstTipos);
-        add(westPane, BorderLayout.WEST);
+        formulario.add(westPane);
+
+        Icon icone1 = new ImageIcon("resources/pcala.jpg");        
+        imagens.setIcon(icone1);
+        formulario.add(imagens); 
         
-        eastPane = new JScrollPane(lblcomprados);
-        add(eastPane, BorderLayout.EAST);
+        Object[] titulos = new Object[]{"Nome", "Preço"};
+        Object[][] dados = new Object[][]{{"Total", "0,00"}};
+        comprados = new JTable(new DefaultTableModel(dados, titulos));
+        eastPane = new JScrollPane(comprados);
         
+        formulario.add(eastPane);
+        eastPane.setMaximumSize(new Dimension(100, 100));
+        
+        add(formulario,BorderLayout.CENTER);
         botoes2 = new JPanel(new GridLayout(1, 2));
         botoes = new JPanel(new GridLayout(1, 2));
         botoes.add(selecionar);
@@ -65,10 +82,6 @@ public class janelaTrabalho extends JFrame {
         botoes2.add(voltar);        
         add(botoes, BorderLayout.SOUTH);
         
-        Icon icone1 = new ImageIcon("resources/pcala.jpg");
-        
-        imagens.setIcon(icone1);
-        add(imagens, BorderLayout.CENTER);
         
         lstTipos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         lstComidas.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -109,12 +122,12 @@ public class janelaTrabalho extends JFrame {
                     
                     lstComidas.setModel(new ComidasListModel(selecionada.getComidas()));
                     westPane2 = new JScrollPane(lstComidas);
-                    
-                    remove(westPane);
+                    formulario.remove(westPane);
+                            
                     remove(botoes);
                     add(botoes2, BorderLayout.SOUTH);
-                    add(westPane2, BorderLayout.WEST);
-
+                    formulario.add(westPane2,0);
+                    lstComidas.requestFocus();
                     validate();repaint();
                     
                 } else {
@@ -126,16 +139,32 @@ public class janelaTrabalho extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Comida selecionada = lstComidas.getSelectedValue();
+                DefaultTableModel modelo = (DefaultTableModel)comprados.getModel();
+                
                 if(selecionada!=null)
-                {
-                    String preencher = "_";
-                    String tamanho = ""+valor;
-                    for (int i = 0; i < 11 - (tamanho.length()); i++) {
-                        preencher = preencher + "_";
-                    }  
+                {  
                     valor+= Double.parseDouble(selecionada.getPreco());
-                    comprados = comprados + selecionada + "<br>";
-                    lblcomprados.setText(comprados + "Total"+preencher+"$" + valor +"</html>");
+                    int existe = -1;
+                    for (int i = 0; i < modelo.getRowCount(); i++)
+                    {
+                        if(modelo.getValueAt(i, 0)==selecionada.getNome())
+                        {
+                            existe = i;
+                            
+                        }
+                    }
+                    if(existe >0)
+                    {
+                        Double aux = Double.parseDouble( (String)modelo.getValueAt(existe, 1) ) + Double.parseDouble(selecionada.getPreco());
+                        String aux2 = aux +"";
+                        modelo.setValueAt(aux2, existe, 1);
+                    }
+                    else
+                    {
+                        modelo.addRow(new Object[]{selecionada.getNome(),selecionada.getPreco()});
+                        
+                    }
+                    modelo.setValueAt(valor, 0, 1);
                     validate();repaint();
                 }
             }
@@ -143,10 +172,10 @@ public class janelaTrabalho extends JFrame {
         voltar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                remove(westPane2);
+                formulario.remove(westPane2);
                 remove(botoes2);
                 add(botoes, BorderLayout.SOUTH);
-                add(westPane, BorderLayout.WEST);
+                formulario.add(westPane, 0);
                 
                 validate();repaint();
             }
@@ -157,9 +186,10 @@ public class janelaTrabalho extends JFrame {
             
             public void actionPerformed(ActionEvent e) {
                 
-                comprados = "<html>";
+                DefaultTableModel modelo = (DefaultTableModel)comprados.getModel();
                 valor = 0;
-                lblcomprados.setText("Total________$0.00");
+                modelo.setValueAt(valor, 0, 1);
+                modelo.setRowCount(1);
                 validate();repaint();
             }
         });
