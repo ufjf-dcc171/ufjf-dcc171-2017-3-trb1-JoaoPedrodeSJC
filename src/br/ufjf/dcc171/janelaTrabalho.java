@@ -44,7 +44,7 @@ public class janelaTrabalho extends JFrame {
     private JLabel preco = new JLabel();
     private JScrollPane westPane,eastPane,westPane2;
     private JPanel botoes,botoes2;
-    //private final JanelaAluno janelaAluno = new JanelaAluno();
+
     
     public janelaTrabalho(List<Tipo> sampleData) {
         
@@ -186,7 +186,8 @@ public class janelaTrabalho extends JFrame {
             
             public void actionPerformed(ActionEvent e) {
                 
-                DefaultTableModel modelo = (DefaultTableModel)comprados.getModel();
+                DefaultTableModel modelo = (DefaultTableModel)comprados.getModel();                
+                JOptionPane.showMessageDialog(null, "O valor a ser pago é: " + valor, "Total",JOptionPane.INFORMATION_MESSAGE);
                 valor = 0;
                 modelo.setValueAt(valor, 0, 1);
                 modelo.setRowCount(1);
