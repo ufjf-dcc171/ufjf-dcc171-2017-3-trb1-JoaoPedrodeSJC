@@ -5,7 +5,10 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.swing.Box;
 import javax.swing.DefaultListModel;
@@ -28,7 +31,7 @@ import javax.swing.table.DefaultTableModel;
 
 public class janelaTrabalho extends JFrame {
 
-    private double valor=0; 
+    private double valor=0;  
     private final List<Tipo> tipos;
     private final JTable comprados;
     
@@ -42,19 +45,26 @@ public class janelaTrabalho extends JFrame {
     
     private JLabel imagens = new JLabel();
     private JLabel preco = new JLabel();
+    
+    private JLabel inicio = new JLabel("-:--");
+    
     private JScrollPane westPane,eastPane,westPane2;
     private JPanel botoes,botoes2;
 
     
-    public janelaTrabalho(List<Tipo> sampleData) {
+    public janelaTrabalho(List<Tipo> sampleData, int numMesa) {
         
-        super("FastFood");
+        super("mesa " + numMesa);
         setMinimumSize(new Dimension(610, 300));
         
         JPanel formulario = new JPanel();
         formulario.setLayout(new GridLayout(1, 3));
         
-
+        JPanel horario = new JPanel();
+        horario.setLayout(new GridLayout(1, 2));
+        horario.add(new JLabel("Inicio do atendimento:"));
+        horario.add(inicio);
+        add(horario,BorderLayout.NORTH);
         
         this.tipos = sampleData;        
         lstTipos.setModel(new TiposListModel(tipos));
@@ -166,6 +176,14 @@ public class janelaTrabalho extends JFrame {
                     }
                     modelo.setValueAt(valor, 0, 1);
                     validate();repaint();
+                    
+                    if(inicio.getText().equals("-:--"))
+                    {
+                        Date date = new Date();
+                        DateFormat formato = new SimpleDateFormat("HH:mm");
+                        String formattedDate = formato.format(date);
+                        inicio.setText(formattedDate);
+                    }
                 }
             }
         });
@@ -186,12 +204,20 @@ public class janelaTrabalho extends JFrame {
             
             public void actionPerformed(ActionEvent e) {
                 
-                DefaultTableModel modelo = (DefaultTableModel)comprados.getModel();                
-                JOptionPane.showMessageDialog(null, "O valor a ser pago é: " + valor, "Total",JOptionPane.INFORMATION_MESSAGE);
-                valor = 0;
-                modelo.setValueAt(valor, 0, 1);
-                modelo.setRowCount(1);
-                validate();repaint();
+                if(valor>0.0)
+                {
+                    Date date = new Date();
+                    DateFormat formato = new SimpleDateFormat("HH:mm");
+                    String formattedDate = formato.format(date);
+
+                    DefaultTableModel modelo = (DefaultTableModel)comprados.getModel();                
+                    JOptionPane.showMessageDialog(null, "O valor a ser pago é: " + valor,"Inicio atd: " + inicio.getText() + " fim: " + formattedDate ,JOptionPane.INFORMATION_MESSAGE);
+                    valor = 0;
+                    inicio.setText("-:--");
+                    modelo.setValueAt(valor, 0, 1);
+                    modelo.setRowCount(1);
+                    validate();repaint();
+                }
             }
         });
     }
