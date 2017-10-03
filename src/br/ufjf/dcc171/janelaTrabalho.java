@@ -137,7 +137,7 @@ public class janelaTrabalho extends JFrame {
                     remove(botoes);
                     add(botoes2, BorderLayout.SOUTH);
                     formulario.add(westPane2,0);
-                    lstComidas.requestFocus();
+
                     validate();repaint();
                     
                 } else {
