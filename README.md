@@ -1,3 +1,7 @@
+    Este trabalho visa exemplificar como seria a interface deste programa em uma
+mesa específica. Os dados utilizados como exemplo e o número da mesa são passa-
+dos pelo contrutor da classe "janelaTrabalho" e tal número pode ser visulizado 
+no título da janela. 
     Para realizar este trabalho, fora utilizado listas, Labels, tabela, Jscroll-
 Pane, ImageIcons e botões. A janela é dividida por 3 gridLayouts, um no norte, 
 um no centro e outro no sul da janela. O grid situado no norte da janela contem 
