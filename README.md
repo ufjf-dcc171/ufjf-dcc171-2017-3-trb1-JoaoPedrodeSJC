@@ -1,3 +1,5 @@
+João Pedro de Souza Jardim da Costa - 201576044 - Sistemas de Informação
+
     Este trabalho visa exemplificar como seria a interface deste programa em uma
 mesa específica. Os dados utilizados como exemplo e o número da mesa são passa-
 dos pelo contrutor da classe "janelaTrabalho" e tal número pode ser visulizado 
@@ -30,3 +32,6 @@ e, caso seja o primeiro objeto da transação, ele também seta o valor da vari�
  "inicio" para o horário atual do sistema. finalizar reseta o valor das variá-
 veis "inicio" e "valor", limpa a tabela de objetos comprados  e, como também, 
 demonstra o horário em que o atendimento foi finalizado.
+    Dificuldade em si, não houve um que se destacasse. Melhorias futuras poderi-
+am abranger imagens interativas coloração de certas partes da interface e ima-
+gens que redimensionam com a janela.
