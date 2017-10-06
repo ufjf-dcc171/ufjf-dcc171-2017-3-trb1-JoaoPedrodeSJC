@@ -10,12 +10,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import javax.swing.Box;
 import javax.swing.DefaultListModel;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -55,7 +53,7 @@ public class janelaTrabalho extends JFrame {
     public janelaTrabalho(List<Tipo> sampleData, int numMesa) {
         
         super("mesa " + numMesa);
-        setMinimumSize(new Dimension(610, 300));
+        setMinimumSize(new Dimension(650, 305));
         
         JPanel formulario = new JPanel();
         formulario.setLayout(new GridLayout(1, 3));
@@ -75,8 +73,8 @@ public class janelaTrabalho extends JFrame {
         imagens.setIcon(icone1);
         formulario.add(imagens); 
         
-        Object[] titulos = new Object[]{"Nome", "Preço"};
-        Object[][] dados = new Object[][]{{"Total", "0,00"}};
+        Object[] titulos = new Object[]{"Nome","Qtde", "Preço"};
+        Object[][] dados = new Object[][]{{"Total",0, "0,00"}};
         comprados = new JTable(new DefaultTableModel(dados, titulos));
         eastPane = new JScrollPane(comprados);
         
@@ -160,21 +158,25 @@ public class janelaTrabalho extends JFrame {
                         if(modelo.getValueAt(i, 0)==selecionada.getNome())
                         {
                             existe = i;
-                            
+                            break;
                         }
                     }
                     if(existe >0)
                     {
-                        Double aux = Double.parseDouble( (String)modelo.getValueAt(existe, 1) ) + Double.parseDouble(selecionada.getPreco());
-                        String aux2 = aux +"";
-                        modelo.setValueAt(aux2, existe, 1);
+                        int aux3 =(Integer)modelo.getValueAt(existe, 1);
+                        aux3++;
+                        modelo.setValueAt(aux3, existe, 1);
                     }
                     else
                     {
-                        modelo.addRow(new Object[]{selecionada.getNome(),selecionada.getPreco()});
+                        modelo.addRow(new Object[]{selecionada.getNome(),1,selecionada.getPreco()});
                         
                     }
-                    modelo.setValueAt(valor, 0, 1);
+                    
+                    int aux3 =(Integer)modelo.getValueAt(0, 1);
+                    aux3++;
+                    modelo.setValueAt(aux3, 0, 1);
+                    modelo.setValueAt(valor, 0, 2);
                     validate();repaint();
                     
                     if(inicio.getText().equals("-:--"))
@@ -204,7 +206,7 @@ public class janelaTrabalho extends JFrame {
             
             public void actionPerformed(ActionEvent e) {
                 
-                if(valor>0.0)
+                if(valor> 0.0 )
                 {
                     Date date = new Date();
                     DateFormat formato = new SimpleDateFormat("HH:mm");
@@ -214,7 +216,7 @@ public class janelaTrabalho extends JFrame {
                     JOptionPane.showMessageDialog(null, "O valor a ser pago é: " + valor,"Inicio atd: " + inicio.getText() + " fim: " + formattedDate ,JOptionPane.INFORMATION_MESSAGE);
                     valor = 0;
                     inicio.setText("-:--");
-                    modelo.setValueAt(valor, 0, 1);
+                    modelo.setValueAt(valor, 0, 2);
                     modelo.setRowCount(1);
                     validate();repaint();
                 }

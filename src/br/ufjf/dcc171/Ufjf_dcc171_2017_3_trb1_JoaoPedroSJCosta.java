@@ -8,7 +8,7 @@ public class Ufjf_dcc171_2017_3_trb1_JoaoPedroSJCosta {
 
     public static void main(String[] args) {
         
-        janelaTrabalho janela = new janelaTrabalho(getSampleData(), 1);
+        janelaTrabalho janela = new janelaTrabalho(getSampleData(), 2);
         janela.setSize(500, 300);
         janela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         janela.setLocationRelativeTo(null);
